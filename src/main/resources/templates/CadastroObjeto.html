@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th=http://www.thymeleaf.org xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>cadastro de objetos</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"> <img alt="BarganhaLeilao" src="/images/LogoBarganha.png" height="35" width="50">
+                </a>
+
+            </div>
+
+            <ul class="nav nav-tabs">
+
+                <li sec:authorize="isAnonymous()" class="presentation"><a href="/cadastro/cliente">Cadastro de Cliente</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation"><a href="/cadastroObjeto/novo">Cadastro de Objetos</a></li>
+                <li class="presentation  "><a href="/produto/pesquisa">Pesquisa</a></li>
+
+                <li sec:authorize="isAnonymous()" class="presentation navbar-right"><a href="/login">login</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/logout">log
+						out</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/objetos/cliente">seus
+						objetos</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <form class="form-horizontal" method="POST" action="/cadastroObjeto" th:object="${cadProduto}" enctype="multipart/form-data">
+        <div class="alert alert-success" th:if="${!#strings.isEmpty(mensagem)}">
+
+            <span th:text="${mensagem}">Produto salvo com sucesso!</span>
+        </div>
+
+        <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="erro : ${#fields.detailedErrors()}">
+                <span th:text="${erro.message}"></span>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1 class="panel-title">Cadastro de objetos</h1>
+            </div>
+
+            <div class="panel-body">
+            
+            <input type="hidden" th:field="*{codigo}"/> 
+            
+            
+            
+                <div class="form-group" th:classappend="${#fields.hasErrors('usuario')} ? has-error" hidden>
+                    <label for="usuario" class="col-sm-2 control-label">usuario:</label>
+                    <div class="col-sm-4">
+                        <input type="text" th:value="${#request.userPrincipal.principal.nome}" class="form-control" id="usuario" name=usuario readonly />
+                    </div>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('produto')} ? has-error">
+                    <label for="Produto" class="col-sm-2 control-label">Produto:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="produto" name=produto required />
+                    </div>
+                </div>
+
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('preco')} ? has-error">
+                    <label for="Preco" class="col-sm-2 control-label">Preço:</label>
+                    <div class="col-sm-4">
+                        <input type="text" min="0" step="any" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control js-currency" id="preco" name=preco required/>
+                    </div>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('descricao')} ? has-error">
+                    <label for="Descricao" class="col-sm-2 control-label">Descrição:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="descricao" name=descricao required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <div class="max-width">
+
+                            <div class="imageContainer">
+                                <img src="/images/LogoBarganha.png" alt="Selecione uma imagem" id="imgPhoto" />
+                            </div>
+                        </div>
+
+                        <input type="file" id="imagem" name="imagem" accept="image/*" required/>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="col-sm-offset-2 ">
+                        <input type="radio" id="indeterminate" name="status" value="BARGANHA" checked> <label for="option">barganha</label>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="col-sm-offset-2 ">
+                        <input type="radio" id="indeterminatel" name="status" value="LEILAO"> <label for="option">leilão</label>
+                    </div>
+                </div>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+                <div class="panel-body">
+                    <div class="form-group" th:classappend="${#fields.hasErrors('comecoleilao')} ? has-error" id="fn" hidden>
+                        <label for="Comecoleilao" class="col-sm-2 control-label">Começo
+							do leilão:</label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" placeholder="Selecione a data." name="comecoleilao" id=comecoleilao th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" th:classappend="${#fields.hasErrors('fimleilao')} ? has-error" id="ln" hidden>
+                        <label for="Fimleilao" class="col-sm-2 control-label">Fim
+							do leilão:</label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" placeholder="Selecione a data." name="fimleilao" id=fimleilao th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                        </div>
+                    </div>
+
+                    <div class="form group">
+                        <div class="col-sm-offset-2 ">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+    <script>
+        $("#indeterminatel").click(function() {
+            $("#fn").show();
+            $("#ln").show();
+        });
+        $("#indeterminate").click(function() {
+            $("#fn").hide();
+            $("#ln").hide();
+        });
+    </script>
+    <script>
+        function getDate() {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            today = yyyy + '-' + mm + '-' + dd;
+            console.log(today);
+            document.getElementById("comecoleilao").value = today;
+        }
+        window.onload = function() {
+            getDate();
+        };
+    </script>
+    <script src="/js/script.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.maskMoney.min.js"></script>
+    <script src="/js/mascara.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/%22%3E">
+
+<head>
+    <meta charset=" UTF-8 ">
+    <title>Barganha e leilão</title>
+    <link rel="stylesheet " type="text/css " href="/css/bootstrap.min.css " />
+    <link rel="stylesheet " type="text/css " href="/css/style.css " />
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-static-top ">
+        <div class="container-fluid ">
+            <div class="navbar-header ">
+                <a class="navbar-brand " href="/ "> <img alt="BarganhaLeilao " src="/images/LogoBarganha.png " height="35 " width="50 ">
+                </a>
+
+            </div>
+
+            <ul class="nav nav-tabs ">
+
+                <li sec:authorize="isAnonymous() " class="presentation "><a href="/cadastro/cliente ">Cadastro de Cliente</a></li>
+                <li sec:authorize="isAuthenticated() " class="presentation "><a href="/cadastroObjeto/novo ">Cadastro de Objetos</a></li>
+                <li class="presentation "><a href="/produto/pesquisa ">Pesquisa</a></li>
+
+                <li sec:authorize="isAnonymous() " class="presentation navbar-right "><a href="/login ">login</a></li>
+                <li sec:authorize="isAuthenticated() " class="presentation navbar-right "><a href="/logout ">log
+                        out</a></li>
+                <li sec:authorize="isAuthenticated() " class="presentation navbar-right "><a href="/objetos/cliente ">seus
+                        objetos</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <body>
+        <h1>Compra realizada com sucesso =)</h1>
+        <a class="btn btn-primary " style="margin-left: 46% " type="submit " href="/ ">Voltar a tela principal</a>
+
+        <script src="/js/jquery-3.6.0.min.js "></script>
+        <script src="/js/bootstrap.min.js "></script>
+    </body>
+
+</html>

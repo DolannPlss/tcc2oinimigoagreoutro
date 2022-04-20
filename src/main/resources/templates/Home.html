@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Barganha e leilão</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"> <img alt="BarganhaLeilao" src="/images/LogoBarganha.png" height="35" width="50">
+                </a>
+
+            </div>
+
+            <ul class="nav nav-tabs">
+
+                <li sec:authorize="isAnonymous()" class="presentation"><a href="/cadastro/cliente">Cadastro de Cliente</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation"><a href="/cadastroObjeto/novo">Cadastro de Objetos</a></li>
+                <li class="presentation  "><a href="/produto/pesquisa">Pesquisa</a></li>
+
+                <li sec:authorize="isAnonymous()" class="presentation navbar-right"><a href="/login">login</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/logout">log
+						out</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/objetos/cliente">seus
+						objetos</a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <form class="form-horizontal" method="POST">
+        <div class="row">
+            <div class="panel panel-produto panel-defaut">
+                <div class="panel heading">
+                    <div class="clearfix">
+                        <h3 style="padding-top: 1%; padding-bottom: 1%; font-size: 250%;" class="panel-title panel-produto" align="center">Produtos</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" >
+            <div class="col-sm-6 col-md-6" th:each="produto : ${produtos}">
+                <div class="thumbnail">
+
+                    <img th:src="${produto.caminho}" alt="upload" height="150" width="150">
+
+                    <div class="caption">
+                        <h5 class="card-title" align="center" th:text="${produto.produto}"></h5>
+                        <h5 class="text" th:text="${produto.descricao}"></h5>
+                        <h4 class="text" th:text="|Preço: R$ ${{produto.preco}}|"></h4>
+                        <div th:if="${#strings.toString(produto.status)} == 'LEILAO'">
+                            <h6 class="text" th:text="|Preço atual: R$ ${{produto.leilaofinal}}|"></h6>
+                        </div>
+                        <a sec:authorize="isAuthenticated()" class="btn btn-primary" style="margin-left: 46%" type="submit" th:href="@{/produto/compra/{codigo}(codigo=${produto.codigo})}">Comprar</a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+
+</html>
