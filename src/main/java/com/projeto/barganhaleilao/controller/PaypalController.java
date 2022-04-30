@@ -42,7 +42,7 @@ public class PaypalController {
 	@RequestMapping("/finalizar/{codigo}")
 	public String compra(@PathVariable CadProduto codigo){
 		prod.delete(codigo);
-		return "redirect:/pay";
+		return "Home";
 	}
 	
 	

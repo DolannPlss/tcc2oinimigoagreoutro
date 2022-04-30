@@ -33,10 +33,12 @@
                                     readonly></label>
                         <label for="description">Descrição do Pagamento</label>
                         <input type="text" id="description" name="description" value="Pagamento via paypal" readonly>
-						<a th:href="@{/produto/Pagamento/finalizar/{codigo}(codigo=${produto.codigo})}">
-	                    	<button class="btn btn-primary">Finalizar compra</button>
-	                    </a>
-
+                    </div>
+                </form>
+                <form action="/produto/Pagamento/pay" method="POST">
+                    <div class="col-50" th:each="produto : ${produtos}">
+                          <a th:href="@{/produto/Pagamento/finalizar/{codigo}(codigo=${produto.codigo})}" class="btn btn-primary ">Finalizar compra
+                          </a>
                     </div>
                 </form>
             </div>
