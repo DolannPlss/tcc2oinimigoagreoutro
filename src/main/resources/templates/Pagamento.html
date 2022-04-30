@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-75">
             <div class="container">
-                <form method="post" action="/pay">
+                <form method="GET" action="/produto/Pagamento/">
                     <div class="col-50" th:each="produto : ${produtos}">
 
                         <h3>Pagamento</h3>
@@ -33,10 +33,11 @@
                                     readonly></label>
                         <label for="description">Descrição do Pagamento</label>
                         <input type="text" id="description" name="description" value="Pagamento via paypal" readonly>
+						<a th:href="@{/produto/Pagamento/finalizar/{codigo}(codigo=${produto.codigo})}">
+	                    	<button class="btn btn-primary">Finalizar compra</button>
+	                    </a>
 
                     </div>
-
-                    <input type="submit" value="Clique aqui para continuar" class="btn">
                 </form>
             </div>
         </div>
@@ -56,7 +57,7 @@
                                         </h4>
                                     </div>
                                 </div>
-                            </b></span></p>
+               </b></span></p>
             </div>
         </div>
     </div>

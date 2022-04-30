@@ -30,8 +30,6 @@ public class PaypalController {
 	public static final String SUCCESS_URL = "pay/success";
 	public static final String CANCEL_URL = "pay/cancel";
 
-	
-	
 	@RequestMapping(value="{codigo}", method = RequestMethod.GET)
 	public ModelAndView tela(@PathVariable("codigo") Long codigo) {
 		CadProduto todosProdutos = prod.findById(codigo).get();
@@ -41,12 +39,13 @@ public class PaypalController {
 		return mv;
 	}
 	
-	@RequestMapping(value ="{codigo}")
-	public String compra(Long codigo){
-		prod.deleteById(codigo);
-		return "/";
+	@RequestMapping("/finalizar/{codigo}")
+	public String compra(@PathVariable CadProduto codigo){
+		prod.delete(codigo);
+		return "redirect:/pay";
 	}
-
+	
+	
 	@PostMapping("/pay")
 	public String payment(@ModelAttribute("order") Order order) {
 		try {

@@ -36,12 +36,30 @@ public class CadastroClientesController {
 
 		ModelAndView mv = new ModelAndView("CadastroClientes");
 		
-		  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		    String encodedPassword = passwordEncoder.encode(clientes.getSenha());
-		    clientes.setSenha(encodedPassword);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(clientes.getSenha());
+		clientes.setSenha(encodedPassword);
+
+		//Realizando codigos de checagem de usuario/nome já cadastrados
 		    
-		clientesInterface.save(clientes);
-		mv.addObject("mensagem", "Cliente cadastrado com sucesso!");
+		boolean validacao = true;
+		
+		List<Clientes> todosClientes = clientesInterface.findAll();
+		if(!todosClientes.isEmpty()){
+			for(int i = 0; i < todosClientes.size(); i++){
+				if(todosClientes.get(i).getUsuario().equals(clientes.getUsuario())){
+					validacao = false;
+					mv.addObject("mensagem", "Usuário já cadastrado!");
+					break;
+				};
+			}
+		}
+		//
+		
+		if(validacao){
+			clientesInterface.save(clientes);
+			mv.addObject("mensagem", "Cliente cadastrado com sucesso!");
+		}
 		return mv;
 	}
 	
