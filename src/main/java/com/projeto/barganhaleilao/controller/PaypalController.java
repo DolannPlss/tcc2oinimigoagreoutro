@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.projeto.barganhaleilao.model.CadProduto;
 import com.projeto.barganhaleilao.model.CadProdutoVendido;
-import com.projeto.barganhaleilao.model.PaypalService;
 import com.projeto.barganhaleilao.model.StatusVenda;
 import com.projeto.barganhaleilao.repository.Produtos;
 import com.projeto.barganhaleilao.repository.ProdutosVendidos;
@@ -24,11 +23,6 @@ public class PaypalController {
 	@Autowired
 	private ProdutosVendidos prodVendidos;
 	
-	PaypalService service;
-
-	public static final String SUCCESS_URL = "pay/success";
-	public static final String CANCEL_URL = "pay/cancel";
-
 	@RequestMapping(value="{codigo}", method = RequestMethod.GET)
 	public ModelAndView tela(@PathVariable("codigo") Long codigo) {
 		CadProduto todosProdutos = prod.findById(codigo).get();
