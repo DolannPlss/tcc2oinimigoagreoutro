@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Seus Objetos</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/"> <img alt="BarganhaLeilao"
+					src="/images/LogoBarganha.png" height="35" width="50">
+				</a>
+
+			</div>
+
+			<ul class="nav nav-tabs">
+
+				<li sec:authorize="isAnonymous()" class="presentation"><a
+					href="/cadastro/cliente">Cadastro de Cliente</a></li>
+				<li sec:authorize="isAuthenticated()" class="presentation"><a
+					href="/cadastroObjeto/novo">Cadastro de Objetos</a></li>
+				<li class="presentation  "><a href="/produto/pesquisa">Pesquisa</a></li>
+
+				<li sec:authorize="isAnonymous()" class="presentation navbar-right"><a
+					href="/login">login</a></li>
+				<li sec:authorize="isAuthenticated()"
+					class="presentation navbar-right"><a href="/logout">log
+						out</a></li>
+				<li sec:authorize="isAuthenticated()"
+					class="presentation navbar-right"><a href="/objetos/cliente">seus
+						objetos</a></li>
+
+			</ul>
+		</div>
+
+	</nav>
+
+	<form class="form-horizontal" method="GET" action="/objetos/cliente"
+		name="formulario" th:object="${filtro}">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h1 class="panel-title">Seus Objetos</h1>
+			</div>
+
+			<div class="panel-body" hidden>
+				<div class="form-group">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input type="text"
+								th:value="${#request.userPrincipal.principal.nome}"
+								class="form-control" id="usuario" name=usuario readonly></input>
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-default" id=clickButton>
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th class="text-center col-md-1">imagem</th>
+				<th class="text-center col-md-1">Produto</th>
+				<th class="text-center col-md-1">Preço</th>
+				<th class="text-center col-md-1">Descrição</th>
+				<th class="text-center col-md-1">Status</th>
+				<th class="text-center col-md-1">Edição</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+			<tr th:each="lista:${Produtos}">
+
+
+
+				<!--  <td class="text-center" th:text="${lista.Codigo}">1</td>-->
+				<td><img th:src="${lista.caminho}" alt="upload" height="150"
+					width="150"></td>
+				<td th:text="${lista.produto}">1</td>
+				<td class="text-center" th:text="${lista.preco}">1</td>
+				<td class="text-center" th:text="${lista.descricao}">1</td>
+				<td class="text-center" th:text="${lista.status}">1</td>
+				<td class="text-center"><a
+					th:href="@{/cadastroObjeto/{codigo}(codigo=${lista.codigo})}">
+						<button class="btn btn-primary">editar</button>
+				</a> <a th:href="@{/objetos/cliente/{codigo}(codigo=${lista.codigo})}">
+						<button class="btn btn-primary">excluir</button>
+
+
+				</a></td>
+
+			</tr>
+
+			<tr>
+
+				<td colspan="5" th:if="${#lists.isEmpty(Produtos)}">carregando...</td>
+
+
+			</tr>
+
+
+		</tbody>
+
+	</table>
+
+	<script>
+		window.onload = AutoSubmit();
+		function AutoSubmit() {
+			if (!sessionStorage.getItem("submitted")) {
+				console.log("submitting");
+				sessionStorage.setItem("submitted", "true");
+				document.forms[0].submit();
+			} else {
+				console.log("already submitted, not repeating");
+				sessionStorage.removeItem("submitted");
+			}
+		}
+	</script>
+	<script>
+		$(document).ready(function() {
+			$("#confirmaExclusao").on('shown.bs.modal', function() {
+				$(".modal").css('display', 'block');
+			})
+		});
+	</script>
+	<script src="/js/botao.js"></script>
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

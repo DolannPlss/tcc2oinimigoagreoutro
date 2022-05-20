@@ -1,0 +1,43 @@
+.navbar-brand {
+	padding-top: 10px;
+}
+
+.panel-default {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.alert {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+* {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	border: none;
+}
+
+input[type='file'] {
+	display: none;
+}
+
+.max-width {
+	max-width: 500px;
+	width: 100%;
+}
+
+#imgPhoto {
+	margin-top: 10%;
+	width: 200px;
+	height: 200px;
+	background-color: #eee;
+	border: 5px solid #ccc;
+	cursor: pointer;
+}
+
+#imgPhoto:hover {
+	background-color: rgb(180, 180, 180);
+	border: 5px solid #111;
+}

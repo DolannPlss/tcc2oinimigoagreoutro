@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Barganha e leilão</title>
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/"> <img alt="BarganhaLeilao"
+					src="/images/LogoBarganha.png" height="35" width="50">
+				</a>
+
+			</div>
+
+			<ul class="nav nav-tabs">
+
+				<li sec:authorize="isAnonymous()" class="presentation"><a
+					href="/cadastro/cliente">Cadastro de Cliente</a></li>
+				<li sec:authorize="isAuthenticated()" class="presentation"><a
+					href="/cadastroObjeto/novo">Cadastro de Objetos</a></li>
+				<li class="presentation  "><a href="/produto/pesquisa">Pesquisa</a></li>
+
+				<li sec:authorize="isAnonymous()" class="presentation navbar-right"><a
+					href="/login">login</a></li>
+				<li sec:authorize="isAuthenticated()"
+					class="presentation navbar-right"><a href="/logout">log
+						out</a></li>
+				<li sec:authorize="isAuthenticated()"
+					class="presentation navbar-right"><a href="/objetos/cliente">seus
+						objetos</a></li>
+
+			</ul>
+		</div>
+	</nav>
+
+	<form class="form-horizontal" method="GET">
+		<div class="panel panel-produto panel-defaut">
+			<div class="panel heading">
+				<div class="clearfix">
+					<h3 style="padding-top: 1%; padding-bottom: 1%; font-size: 250%"
+						class="panel-title" align="center">Barganha e Leilão - Compra</h3>
+				</div>
+			</div>
+			<div class="card" th:each="produto : ${produtos}">
+				<div class="card-body">
+					<h2 class="card-title" style="font-size: 400%;" align="center"
+						th:text="${produto.produto}"></h2>
+					<h4 class="text-center" th:text="|Preço: R$ ${{produto.preco}}|"></h4>
+
+
+					<h4 class="text-center" text="Tempo de leilão:"></h4>
+
+
+
+					<div th:if="${#strings.toString(produto.status)} == 'LEILAO'">
+
+						<h6 class="text-center">
+							<a class="btn btn-primary btn-md" id="leilao"
+								th:href="@{/produto/leilao/{codigo}(codigo=${produto.codigo})}"><span>Leilão</span></a>
+						</h6>
+					</div>
+					<div th:if="${#strings.toString(produto.status)} == 'BARGANHA'">
+						<h6 class="text-center">
+							<a class="btn btn-primary btn-md" name="comprar" id="comprar"
+								th:href="@{/produto/Pagamento/{codigo}(codigo=${produto.codigo})}"><span>Comprar</span></a>
+						</h6>
+						<h6 class="text-center">
+							<a class="btn btn-primary btn-md" id="barganha"
+								th:href="@{/chatbarganha}"><span>Chat para Negociar</span></a>
+						</h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<script>
+		
+	</script>
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script th:inline="javascript">
+		var donodoleilao = /*[[${produtos.usuario}]]*/'donodoleilao';
+		var usuLogado = /*[[${#request.userPrincipal.principal.nome}]]*/'UsuarioLogado';
+		if (usuLogado == donodoleilao) {
+			$("#comprar").hide();
+
+		}
+	</script>
+</body>
+</html>

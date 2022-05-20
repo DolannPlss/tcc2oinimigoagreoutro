@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Seus Objetos</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"> <img alt="BarganhaLeilao" src="/images/LogoBarganha.png" height="35" width="50">
+                </a>
+
+            </div>
+
+            <ul class="nav nav-tabs">
+
+                <li sec:authorize="isAnonymous()" class="presentation"><a href="/cadastro/cliente">Cadastro de Cliente</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation"><a href="/cadastroObjeto/novo">Cadastro de Objetos</a></li>
+                <li class="presentation  "><a href="/produto/pesquisa">Pesquisa</a></li>
+
+                <li sec:authorize="isAnonymous()" class="presentation navbar-right"><a href="/login">login</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/logout">log
+						out</a></li>
+                <li sec:authorize="isAuthenticated()" class="presentation navbar-right"><a href="/objetos/cliente">seus
+						objetos</a></li>
+
+            </ul>
+        </div>
+    </nav>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div th:each="produto : ${produtos}">
+                <h1 class="panel-title" th:text="|Produto em leilao: ${{produto.produto}}|"></h1>
+            </div>
+        </div>
+        <div class="card" th:each="produto : ${produtos}">
+            <img th:src="${produto.caminho}" alt="upload" height="200" width="200" style="margin-left: 43%">
+
+        </div>
+
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+            <div th:each="produto : ${produtos}">
+                <h6 th:text="|Valor Inicial: R$ ${{produto.preco}}|" style="text-align: center;"></h6>
+            </div>
+            <div th:each="produto : ${produtos}">
+                <h6 th:text="|Valor Atual: R$ ${{produto.leilaofinal}}|" style="text-align: center;"></h6>
+
+
+            </div>
+
+        </div>
+        <div th:each="produto : ${produtos}">
+            <h6 th:text="|Fechamento: ${{produto.fimleilao}}|" style="text-align: center;"></h6>
+        </div>
+
+        <div th:each="produto : ${produtos}">
+            <div th:if="${produto.nomeleilao} != null">
+                <h6 th:text="|Lance por:${{produto.nomeleilao}}|" style="text-align: center;"></h6>
+            </div>
+        </div>
+
+
+
+        <div th:each="produto : ${produtos}">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+
+                <div class="input-group">
+
+                    <div class="col-sm-4" name="botaoLeilao" id="botaoLeilao">
+                        <button type="submit" class="btn btn-primary" th:href="@{/produto/leilao/{codigo}(codigo=${produto.codigo})}">Dar
+								lance!</button>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <input type="number" th:attr="min=${produto.leilaofinal}" step="any" onkeyup="if(this.value<0){this.value= this.value * -1}" class="form-control js-currency" placeholder="Digite seu lance aqui" name="lancefinal" id="lancefinal" required></input>
+                        <div hidden>
+                            <input type="text" th:value="${#request.userPrincipal.principal.nome}" class="form-control" id="nomeleilao" name="nomeleilao" />
+
+                        </div>
+                    </div>
+
+                    <div hidden>
+                        <h6 type="text" th:text="${produto.fimleilao}" name="datafinal" id="datafinal"></h6>
+                        <h6 type="text" th:text="${#request.userPrincipal.principal.nome}" class="form-control" id="usuLogado" name="usuLogado"></h6>
+                    </div>
+                    <h6 class="text-center">
+                        <a class="btn btn-primary btn-md" th:href="@{/produto/Pagamento/{codigo}(codigo=${produto.codigo})}" name="botaoComprar" id="botaoComprar"><span>Comprar</span></a>
+                    </h6>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.maskMoney.min.js"></script>
+    <script src="/js/mascara.js"></script>
+    <script th:inline="javascript">
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        $(document).ready(function() {
+            /*<![CDATA[*/
+            var dueDate = /*[[${produtos.fimleilao}]]*/ 'Data';
+            var usuLogado = /*[[${#request.userPrincipal.principal.nome}]]*/ 'UsuarioLogado';
+            var autorLance = /*[[${produtos.nomeleilao}]]*/ 'AutorLance';
+            var donodoleilao = /*[[${produtos.usuario}]]*/ 'donodoleilao';
+            /*]]>*/
+            if (today > dueDate) {
+                $("#lancefinal").prop("disabled", "disable");
+                $("#botaoLeilao").hide();
+                $("#lancefinal").hide();
+                if (usuLogado != autorLance) {
+                    $("#botaoComprar").hide();
+                }
+            }
+            if (today < dueDate) {
+            	
+            	 $("#botaoComprar").hide();
+            }
+
+            if (usuLogado == donodoleilao) {
+                $("#lancefinal").prop("disabled", "disable");
+                $("#botaoLeilao").hide();
+                $("#lancefinal").hide();
+            }
+        });
+    </script>
+</body>
+
+</html>
