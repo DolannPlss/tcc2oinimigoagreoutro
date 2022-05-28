@@ -51,6 +51,8 @@ public class CadProduto {
 	
 	private String nomeleilao;
 	
+	private String celularDoVendedor;
+	
 	public String getUsuario() {
 		return usuario;
 	}
@@ -140,6 +142,14 @@ public class CadProduto {
 
 	public void setNomeleilao(String nomeleilao) {
 		this.nomeleilao = nomeleilao;
+	}
+
+	public String getCelularDoVendedor() {
+		return celularDoVendedor;
+	}
+
+	public void setCelularDoVendedor(String celularDoVendedor) {
+		this.celularDoVendedor = celularDoVendedor;
 	}
 
 	@Override
