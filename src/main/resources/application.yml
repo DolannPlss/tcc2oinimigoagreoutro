@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      access-key: AKIAV73Y5N6YGKWOCB76
-      secret-key: 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
+      access-key: AKIA3YMNLFDV4CTETHDN
+      secret-key: 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
     region:
       static: sa-east-1
     stack:
@@ -10,7 +10,7 @@ cloud:
 
 application:
   bucket:
-    name: barganhaeleilao
+    name: barganhaleilao
 
 
 spring:

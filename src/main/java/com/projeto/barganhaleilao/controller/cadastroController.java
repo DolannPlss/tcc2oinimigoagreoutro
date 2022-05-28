@@ -43,7 +43,7 @@ public class cadastroController {
 		
 		service.uploadFile(file);
 		 
-		cadProduto.setCaminho("https://barganhaeleilao.s3.sa-east-1.amazonaws.com/"+file.getOriginalFilename());
+		cadProduto.setCaminho("https://barganhaleilao.s3.sa-east-1.amazonaws.com/"+file.getOriginalFilename());
 		produtos.save(cadProduto);
 		mv.addObject("mensagem", "Produto salvo com sucesso!");
 		return mv;

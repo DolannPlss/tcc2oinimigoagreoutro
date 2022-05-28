@@ -1,7 +1,7 @@
 package com.projeto.barganhaleilao.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -44,10 +44,10 @@ public class CadProduto {
 	
 	private String caminho;
  
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date comecoleilao;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date fimleilao;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime comecoleilao;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime fimleilao;
 	
 	private String nomeleilao;
 	
@@ -59,19 +59,19 @@ public class CadProduto {
 		this.usuario = usuario;
 	}
 
-	public Date getComecoleilao() {
+	public LocalDateTime getComecoleilao() {
 		return this.comecoleilao;
 	}
 
-	public void setComecoleilao(Date comecoleilao) {
+	public void setComecoleilao(LocalDateTime comecoleilao) {
 		this.comecoleilao = comecoleilao;
 	}
 
-	public Date getFimleilao() {
+	public LocalDateTime getFimleilao() {
 		return this.fimleilao;
 	}
 
-	public void setFimleilao(Date fimleilao) {
+	public void setFimleilao(LocalDateTime fimleilao) {
 		this.fimleilao = fimleilao;
 	}
 

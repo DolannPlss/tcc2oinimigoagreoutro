@@ -21,6 +21,11 @@ public class CompraController {
 	public ModelAndView tela(@PathVariable("codigo") Long codigo) {
 		CadProduto todosProdutos = prod.findById(codigo).get();
 		ModelAndView mv = new ModelAndView("TelaDeCompra");
+		String celular = prod.buscarCelularDoVendedor(todosProdutos.getUsuario());
+		if(!celular.startsWith("55")) {
+			celular = "55" + celular; 
+		}
+		todosProdutos.setCelularDoVendedor(celular);
 		mv.addObject("produtos", todosProdutos);
 		mv.addObject(new CadProduto());
 		return mv;
