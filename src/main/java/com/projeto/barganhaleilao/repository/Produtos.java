@@ -12,8 +12,8 @@ import com.projeto.barganhaleilao.model.CadProduto;
 
 public interface Produtos extends JpaRepository<CadProduto, Long>{
 	
-	@Query(nativeQuery = true, value = "SELECT cli.celular FROM barganhaleilao.clientes cli, "
-			+ "barganhaleilao.cad_produto prod WHERE cli.usuario = :cliente and cli.usuario = prod.usuario")
+	@Query(nativeQuery = true, value = "SELECT cli.celular FROM {h-schema}clientes cli, "
+			+ "{h-schema}cad_produto prod WHERE cli.usuario = :cliente and cli.usuario = prod.usuario")
 	String buscarCelularDoVendedor(@Param("cliente") String cliente);
 	
 	public List<CadProduto> findByProdutoContaining(String produto);
